@@ -4,20 +4,8 @@
     text-decoration: none;
 }
 
-.nav-wrapper {
-    background-color: rgb(41, 95, 97);
-}
-
-.custom-footer {
-    background-color: rgb(41, 95, 97) !important;
-}
-
-.custom-footer-copyright {
-    background-color: rgb(28, 75, 77) !important;
-}
-
 .main-container {
-    padding: 20px;
+    padding: 5px;
     max-width: 900px;
     min-height: 800px;
     margin: 0 auto;
@@ -25,6 +13,15 @@
 
 .main-container .section {
     min-height: 700px;
+}
+
+.section {
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+
+.justified-text {
+    text-align: justify;
 }
 
 .terminal {
@@ -36,6 +33,7 @@
     flex-direction: column;
     height: 120px; 
     overflow-y: auto;
+    max-width: 900px;
 }
 
 .terminal-output {
