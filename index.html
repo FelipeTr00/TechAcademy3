@@ -1,79 +1,60 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Derby's Game</title>
-    <link rel="icon" type="image/ico" href="public/assets/favicon.ico">
+    <link rel="icon" type="image/ico" href="assets/favicon.ico">
+    <title>Projeto Materialize</title>
 
-    <link href="public/css/index.css" rel="stylesheet">
-    <link href="public/css/materialize.min.css" rel="stylesheet">
+
+    <link href="css/style.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
 </head>
 
 <body>
 
-    <nav>
-        <div class="nav-wrapper cyan darken-4">
-            <a href="#!" class="brand-logo">Derby's Game</a>
-            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-            <ul class="right hide-on-med-and-down">
-                <li><a href="#">Login</a></li>
-                <li><a href="#">Help?</a></li>
-                <li><a href="#">Contato</a></li>
+    <nav class="navbar-fixed cyan darken-4">
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo">Derby's Tale Game</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="#" data-page="game">Game</a></li>
+                <li><a href="#" data-page="login">Login</a></li>
+                <li><a href="#" data-page="help">Help</a></li>
             </ul>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         </div>
     </nav>
 
     <ul class="sidenav" id="mobile-demo">
-        <li><a href="#">Login</a></li>
-        <li><a href="#">Help?</a></li>
-        <li><a href="#">Contato</a></li>
+        <li><a href="#" data-page="game">Game</a></li>
+        <li><a href="#" data-page="login">Login</a></li>
+        <li><a href="#" data-page="help">Help</a></li>
     </ul>
 
-
-
-    <!-- MAIN -->
-    <div class="main-container">
-        <div class="section z-depth-1">
-            <p id="api-content">Cena1 > Cena 2 > Cena 3 > Cena 4 > Cena Final</p>
-        </div>
-
-        <div class="terminal z-depth-1">
-            <div class="terminal-output" id="terminal-output">
-            </div>
-            <div class="terminal-input">
-                <input type="text" id="terminal-input" placeholder="">
-                <a class="btn waves-effect waves-light" id="send-button">
-                    Enviar
-                </span></a>
+    <main>
+        <div class="container">
+            <div id="content">
             </div>
         </div>
-    </div>
-
-    <!-- MAIN END -->
-
+    </main>
 
     <footer class="page-footer cyan darken-4">
-        <div class="container">
-            <div class="row">
-                <div class="col l12 s12 justified-text">
-                    <h5 class="white-text">Derby's Game</h5>
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id ipsam modi voluptatibus libero doloribus, laudantium sed odio dolorem nam qui tempora eligendi, nemo tenetur magnam laboriosam unde! Quam illo explicabo fugit corrupti ea, assumenda amet doloremque dolor hic exercitationem voluptates, ut omnis aliquid aspernatur nulla ex nobis qui ab autem?</p>
-                </div>
+        <div class="footer-container">
+            <div class="footer-left">
+                <h6>© 2024 Desenvolvido por Felipe.</h6>
             </div>
-        </div>
-        <div class="footer-copyright cyan darken-3 accent-5">
-            <div class="container">
-                © 2024 Desenvolvido por Felipe.
+            <div class="footer-right">
+                <h6>TechAcademy3</h6>
             </div>
         </div>
     </footer>
 
-    <script src="public/js/materialize.min.js"></script>
-    <script src="public/js/init.js"></script>
-</body>
 
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="js/main.js"></script>
+<script src="js/init.js"></script>
 </html>
