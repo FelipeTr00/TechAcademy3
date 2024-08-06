@@ -7,18 +7,16 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const page = this.getAttribute('data-page');
 
-            // Carregar o conteúdo do arquivo correspondente
             fetch(`content/${page}.html`)
                 .then(response => response.text())
                 .then(html => {
                     contentDiv.innerHTML = html;
                     
-                    // Reinitialize Materialize components
                     M.AutoInit();
                 })
                 .catch(error => console.error('Erro ao carregar o conteúdo:', error));
         });
     });
 
-    links[1].click();
+    links[0].click();
 });
