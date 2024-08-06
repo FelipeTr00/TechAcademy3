@@ -25,8 +25,11 @@ CREATE TABLE itens (
     description TEXT
 );
 
-INSERT INTO itens (item, type, description) VALUES ('Monza', 'Carro', 'GM Chevrolet Monza Tubarão 1991 2.0 Gasolina');
-INSERT INTO itens (item, type, description) VALUES ('Gol', 'Carro','VW Goleta 1993 Apzão 1.8 Álcool');
+INSERT INTO itens (item, type, description)
+VALUES ('Monza', 'Carro', 'GM Chevrolet Monza Tubarão 1991 2.0 Gasolina');
+
+INSERT INTO itens (item, type, description) 
+VALUES ('Gol', 'Carro','VW Goleta 1993 Apzão 1.8 Álcool');
 
 DELETE FROM itens WHERE item_id = '3';
 
