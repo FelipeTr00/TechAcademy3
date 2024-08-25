@@ -4,13 +4,13 @@ body {
 }
 
 .container {
-    height: 850px;
+    height: 880px;
     border: #212121;
 }
 
 .main {
     margin: 5px;
-    height: 700px;
+    height: 750px;
 }
 
 .main-container {
@@ -22,7 +22,7 @@ body {
 }
 
 .api {
-    height: 600px;
+    height: 650px;
     overflow-y: visible; /* barra de rolagem vertical */
     width: 100%;
     border-radius: 4px;
@@ -65,14 +65,14 @@ body {
     justify-content: space-between;
     align-items: center;
     margin: 0 auto;
-    padding: 0 10px 20px 10px;
+    padding: 0 5px 20px 5px;
 }
 
 .footer-left {
-    flex: 10;
+    flex: 2;
 }
 
 .footer-right {
-    flex: 2;
+    flex: 0;
     text-align: right;
 }
