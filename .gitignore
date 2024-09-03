@@ -1,5 +1,6 @@
 .vscode
 .idea
+/api/.idea
 dados.iml
 /nodemodules
 node_modules
