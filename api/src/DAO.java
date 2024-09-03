@@ -35,33 +35,62 @@ public class DAO {
         String sql = "SELECT * FROM scenes s WHERE scene_id IS NOT NULL;";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery()) {
+             ResultSet rs = stmt.executeQuery()) {
 
-                while (rs.next()) {
-                    Scene scene = new Scene();
+            while (rs.next()) {
+                Scene scene = new Scene();
 
-                    scene.setSceneId(rs.getInt("scene_id"));
-                    scene.setTitle(rs.getString("title"));
-                    scene.setTarget(rs.getInt("target"));
-                    scene.setDescription(rs.getString("description"));
-                    scene.setRightCommand(rs.getString("right_command"));
-                    scene.setInventory(rs.getString("inventory"));
+                scene.setSceneId(rs.getInt("scene_id"));
+                scene.setTitle(rs.getString("title"));
+                scene.setTarget(rs.getInt("target"));
+                scene.setDescription(rs.getString("description"));
+                scene.setRightCommand(rs.getString("right_command"));
+                scene.setInventory(rs.getString("inventory"));
 
-                    scenes.add(scene);
+                scenes.add(scene);
 
-                }
-                System.out.println("Scenes: " + scenes.size());
-
-            } catch (SQLException e) {
-                System.out.println("Falha na consulta com o banco.");
-                e.printStackTrace();
             }
+            System.out.println("Scenes: " + scenes.size());
 
-            return scenes;
-
+        } catch (SQLException e) {
+            System.out.println("Falha na consulta com o banco.");
+            e.printStackTrace();
         }
+
+        return scenes;
 
     }
 
+
+    public List<Item> findAllItem() throws SQLException {
+        List<Item> items = new ArrayList<>();
+        String sql = "SELECT * FROM items s WHERE item_id IS NOT NULL;";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Item item = new Item();
+
+                item.setItemId(rs.getInt("item_id"));
+                item.setItem(rs.getString("item"));
+                item.setDescrItem(rs.getString("descr_item"));
+                item.setSceneId(rs.getInt("scene_id"));
+
+                items.add(item);
+            }
+
+            System.out.println("Items: " + items.size());
+
+        } catch (SQLException e) {
+            System.out.println("Falha na consulta com o banco.");
+            e.printStackTrace();
+        }
+
+        return items;
+
+    }
+
+}
 
 
