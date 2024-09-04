@@ -5,13 +5,11 @@ import java.util.Objects;
 public class User {
     private int userId;
     private String name;
-    private String password;  // Renomeado de 'passwd' para 'password'
-    private int currentScene; // Renomeado de 'current_scene' para 'currentScene'
+    private String password;
+    private int currentScene;
 
-    // Default constructor
     public User() {}
 
-    // Constructor with parameters
     public User(int id, String name, String password, int currentScene) {
         this.userId = id;
         this.name = name;

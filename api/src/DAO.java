@@ -20,7 +20,7 @@ public class DAO {
                     "root",
                     "123"
             );
-            System.out.println("Conexão com MySQL OK! Link: http://localhost:4567");
+            System.out.println("Conexão com MySQL OK! Link: http://localhost:5150");
         } catch (ClassNotFoundException e) {
             System.out.println("Erro de Driver.");
             e.printStackTrace();
@@ -89,6 +89,34 @@ public class DAO {
 
         return items;
 
+    }
+
+    public List<User> createUser() throws SQLException {
+        List<User> users = new ArrayList<>();
+        String sql = "INSERT INTO users (name, password) VALUES (?,?);";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                User user = new User();
+
+                user.setId(rs.getInt("user_id"));
+                user.setName(rs.getString("name"));
+                user.setCurrentScene(rs.getInt("current_scene"));
+                user.setPassword(rs.getString("password"));
+
+                users.add(user);
+            }
+
+            System.out.println("User: " + users.size());
+
+        } catch (SQLException e) {
+            System.out.println("Falha na consulta com o banco.");
+            e.printStackTrace();
+        }
+
+        return users;
     }
 
 }

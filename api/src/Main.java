@@ -1,6 +1,7 @@
 import com.google.gson.Gson;
 import model.Item;
 import model.Scene;
+import model.User;
 import spark.Spark;
 
 import java.sql.SQLException;
@@ -14,22 +15,21 @@ public class Main {
 
     public static void main(String[] args) throws SQLException {
 
+        Spark.port(5150);
+        DAO userDAO = new DAO();
         DAO scenesDAO = new DAO();
         DAO itemsDAO = new DAO();
 
-        // Recupera as cenas e itens do banco de dados
+        List<User> users = userDAO.createUser();
         List<Scene> scenes = scenesDAO.findAllScene();
         List<Item> items = itemsDAO.findAllItem();
 
-        // Cria um mapa para combinar cenas e itens
         Map<String, Object> combinedData = new HashMap<>();
         combinedData.put("scenes", scenes);
         combinedData.put("items", items);
 
-        // Converte o mapa em um único JSON
         String combinedJson = json.toJson(combinedData);
 
-        // Configura a rota raiz ("/") para retornar o JSON combinado
         Spark.get("/", (req, res) -> {
             res.type("application/json");
             return combinedJson;
