@@ -8,8 +8,8 @@ ___
 
 #### BRANCHES
 
-Branch -> main: projeto
-Branch -> tarefas: trilhas e listas de exercícios
+    Branch -> main: projeto <br>
+    Branch -> tarefas: trilhas e listas de exercícios
 
 ---
 #### BACKEND
