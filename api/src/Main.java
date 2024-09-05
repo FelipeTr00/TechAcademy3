@@ -1,6 +1,8 @@
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import model.Item;
 import model.Scene;
+import model.User;
 import spark.Spark;
 
 import java.sql.SQLException;
@@ -18,6 +20,7 @@ public class Main {
         Spark.setPort(5150);
         DAO = new DAO();
 
+        // Endpoint GET para obter cenas e itens
         Spark.get("/", (req, res) -> {
             String username = "root";
 
@@ -43,7 +46,6 @@ public class Main {
 
             } catch (SQLException e) {
                 e.printStackTrace();
-
                 return json.toJson(new ErrorResponse("Erro de conexão MySQL."));
             }
         });
@@ -56,7 +58,6 @@ public class Main {
                 currentScene = DAO.getCurrentSceneForUser(username);
             } catch (SQLException e) {
                 e.printStackTrace();
-
                 return json.toJson(new ErrorResponse("Erro de conexão MySQL."));
             }
 
@@ -72,14 +73,49 @@ public class Main {
                 return json.toJson(responseData);
             }
             else return json.toJson(new ErrorResponse("Usuário não encontrado."));
-
         });
+
+        Spark.post("/insert-user", (req, res) -> {
+            try {
+                User user = json.fromJson(req.body(), User.class);
+
+                if (user.getName() == null || user.getPassword() == null) {
+                    res.status(400);  // Bad Request
+                    return json.toJson(new ErrorResponse("Nome e senha são obrigatórios."));
+                }
+
+                DAO.insertUser(user);
+
+                res.status(201);  // Created
+                return json.toJson(new SuccessResponse("Usuário criado com sucesso."));
+            } catch (JsonSyntaxException e) {
+                res.status(400);  // Bad Request
+                return json.toJson(new ErrorResponse("Formato JSON inválido."));
+            } catch (SQLException e) {
+                e.printStackTrace();  // Exibe o erro detalhado
+                res.status(500);  // Internal Server Error
+                return json.toJson(new ErrorResponse("Erro ao inserir o usuário no banco de dados."));
+            }
+        });
+
     }
 
     private static class ErrorResponse {
         private String message;
 
         public ErrorResponse(String message) {
+            this.message = message;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+    }
+
+    private static class SuccessResponse {
+        private String message;
+
+        public SuccessResponse(String message) {
             this.message = message;
         }
 

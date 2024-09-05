@@ -1,5 +1,6 @@
 import model.Scene;
 import model.Item;
+import model.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class DAO {
             Class.forName("com.mysql.cj.jdbc.Driver");
             this.conn = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3307/game",
-                    "root",
+                    "user",
                     "123"
             );
             System.out.println("Conexão com MySQL OK! Link: http://localhost:5150/");
@@ -88,6 +89,25 @@ public class DAO {
                     return null;
                 }
             }
+        }
+    }
+
+    public void insertUser(User user) throws SQLException {
+        String sql = "INSERT INTO users (name, password) VALUES (?, ?)";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, user.getName());
+            stmt.setString(2, user.getPassword());
+
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Sucesso!");
+            } else {
+                System.out.println("Erro ao criar usuário.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Exiba o detalhe da exceção
+            throw e; // Re-lance a exceção para tratamento superior
         }
     }
 }

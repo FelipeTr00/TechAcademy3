@@ -1,6 +1,5 @@
--- CREATE DATABASE game;
--- DROP DATABASE game;
- USE game;
+CREATE DATABASE game;
+USE game;
 
 CREATE TABLE scenes (
                         scene_id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -13,7 +12,7 @@ CREATE TABLE scenes (
 
 CREATE TABLE users (
                        user_id INTEGER PRIMARY KEY AUTO_INCREMENT,
-                       name VARCHAR(255) UNIQUE NOT NULL,
+                       name VARCHAR(255) NOT NULL,
                        password VARCHAR(255) NOT NULL,
                        current_scene  INTEGER DEFAULT 1,
                        FOREIGN KEY (current_scene) REFERENCES scenes(scene_id)
@@ -68,5 +67,5 @@ VALUES
 INSERT INTO users (name, password )
 VALUES
     ('root', 'senha123'),
-    ('user', 'user');
+    ('teste', 'teste');
 
