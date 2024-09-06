@@ -106,8 +106,8 @@ public class DAO {
                 System.out.println("Erro ao criar usuário.");
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Exiba o detalhe da exceção
-            throw e; // Re-lance a exceção para tratamento superior
+            e.printStackTrace();
+            throw e;
         }
     }
 }
