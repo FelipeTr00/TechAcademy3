@@ -3,7 +3,7 @@ version: '3.8'
 services:
   mysql:
     image: mysql:latest
-    container_name: database
+    container_name: game
     environment:
       MYSQL_ROOT_PASSWORD: 123
       MYSQL_DATABASE: game
