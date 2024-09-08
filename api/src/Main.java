@@ -18,9 +18,15 @@ public class Main {
     public static void main(String[] args) throws SQLException {
 
         Spark.setPort(5150);
+
+        Spark.before((req, res) -> {
+            res.header("Access-Control-Allow-Origin", "*");
+            res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+            res.header("Access-Control-Allow-Headers", "Content-Type");
+                });
+
         DAO = new DAO();
 
-        // Endpoint GET para obter cenas e itens
         Spark.get("/", (req, res) -> {
             String username = "root";
 

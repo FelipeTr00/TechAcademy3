@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exibição de JSON</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .scene, .items {
+            margin-bottom: 20px;
+        }
+        h2 {
+            margin-bottom: 10px;
+        }
+        .command-input {
+            margin-top: 20px;
+        }
+        .command-input input, .command-input button {
+            font-size: 16px;
+            padding: 10px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Game:</h1>
+
+    <div class="scene">
+        <h2>Cena: </h2>
+        <ul id="scene-list"></ul>
+    </div>
+
+    <div class="items">
+        <ul id="items-list"></ul>
+    </div>
+
+    <div class="command-input">
+        <input type="text" id="command-input" placeholder="Digite seu comando...">
+        <button onclick="executeCommand()">Enviar</button>
+    </div>
+
+    <script>
+        // Função para criar uma lista <li> a partir dos dados
+        function createList(items, parentId) {
+            const ul = document.getElementById(parentId);
+            ul.innerHTML = ''; 
+
+            items.forEach(item => {
+                const li = document.createElement('li');
+                
+                if (item.title) { // Se for uma cena
+                    li.innerHTML = `<strong> ${item.title}</strong> <br> <p> ${item.description} </p>`;
+                } else if (item.item) { // Se for um item
+                    li.innerHTML = `<strong>Itens:</strong> ${item.item}<br><p>${item.descrItem}</p>`;
+                }
+                
+                ul.appendChild(li);
+            });
+        }
+
+        // Função para obter os dados da API e atualizar a lista
+        async function fetchData(user) {
+            try {
+                // Usando a variável user para criar a URL
+                const response = await fetch(`http://localhost:5150/${user}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                
+                // Preencher as listas com dados JSON
+                createList(data.scenes, 'scene-list');
+                createList(data.items, 'items-list');
+            } catch (error) {
+                console.error('There has been a problem with your fetch operation:', error);
+            }
+        }
+
+        // Obtém o parâmetro 'user' da URL
+        function getUserFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('user') || 'defaultUser'; // 'defaultUser' é um fallback se 'user' não estiver presente
+        }
+
+        // Chama a função para obter e exibir os dados com o user da URL
+        const user = getUserFromURL();
+        fetchData(user);
+
+        // Função para executar o comando inserido no input
+        function executeCommand() {
+    const command = document.getElementById('command-input').value;
+    if (command) {
+        // Atualiza a URL com o novo valor de 'user'
+        const newUrl = new URL(window.location.href);
+        newUrl.searchParams.set('user', command);
+        window.history.pushState({}, '', newUrl);
+
+        // Recarrega os dados com o novo valor de 'user'
+        fetchData(command);
+    } else {
+        console.warn('Por favor, insira um comando.');
+    }
+}
+    </script>
+</body>
+</html>

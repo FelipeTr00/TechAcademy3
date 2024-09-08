@@ -7,10 +7,10 @@
     <link rel="icon" type="image/ico" href="assets/favicon.ico">
     <title>Projeto Materialize</title>
 
-
     <link href="css/style.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
 </head>
 
 <body>
@@ -36,9 +36,29 @@
     <main>
         <div class="container">
             <div id="content">
+                <div class="scene">
+                    <h4 id="scene-title">Cena: </h4>
+                    <ul id="scene-list" class="collection"></ul>
+                </div>
+
+                <div class="items">
+                    <h4>Itens:</h4>
+                    <ul id="items-list" class="collection"></ul>
+                </div>
+
+
             </div>
         </div>
     </main>
+    <div class="container2">
+        <div class="content">
+            <div class="command-input">
+                <h4>Terminal:</h4>
+                <input type="text" id="command-input" placeholder="Digite seu comando aqui"     class="validate">
+                <button class="btn waves-effect waves-light" onclick="executeCommand()">Enviar Comando</button>
+            </div>
+        </div>
+    </div>
 
     <footer class="page-footer cyan darken-4">
         <div class="footer-container">
@@ -51,10 +71,69 @@
         </div>
     </footer>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
+    
+    <script>
+        function createList(items, parentId, updateTitle) {
+            const ul = document.getElementById(parentId);
+            ul.innerHTML = '';
 
+            items.forEach(item => {
+                const li = document.createElement('li');
+                li.classList.add('collection-item'); 
+
+                if (item.title) { 
+                    li.innerHTML = `<strong> ${item.title}</strong><br><p>${item.description}</p>`;
+                    if (updateTitle) {
+                        document.getElementById('scene-title').innerHTML = `Cena: ${item.sceneId}`;
+                    }
+                } else if (item.item) { 
+                    li.innerHTML = `<strong>Item:</strong> ${item.item}<br><p>${item.descrItem}</p>`;
+                }
+
+                ul.appendChild(li);
+            });
+        }
+
+        async function fetchData(user) {
+            try {
+                const response = await fetch(`http://localhost:5150/${user}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                
+                createList(data.scenes, 'scene-list', true); 
+                createList(data.items, 'items-list', false); 
+
+            } catch (error) {
+                console.error('There has been a problem with your fetch operation:', error);
+            }
+        }
+
+        function getUserFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('user') || 'defaultUser'; 
+        }
+
+        const user = getUserFromURL();
+        fetchData(user);
+
+        function executeCommand() {
+            const command = document.getElementById('command-input').value;
+            if (command) {
+                const newUrl = new URL(window.location.href);
+                newUrl.searchParams.set('user', command);
+                window.history.pushState({}, '', newUrl);
+
+                fetchData(command);
+            } else {
+                console.warn('Por favor, insira um comando.');
+            }
+        }
+    </script>
 </body>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-<script src="js/main.js"></script>
-<script src="js/init.js"></script>
+
 </html>
