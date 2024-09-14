@@ -7,10 +7,12 @@
     <link rel="icon" type="image/ico" href="assets/favicon.ico">
     <title>Projeto Materialize</title>
 
+    <style>
+        /* Importando Materialize CSS */
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css');
+        @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+    </style>
     <link href="css/style.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    
 </head>
 
 <body>
@@ -19,23 +21,25 @@
         <div class="nav-wrapper">
             <a href="#" class="brand-logo">Derby's Tale</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="#" data-page="game">Game</a></li>
-                <li><a href="#" data-page="login">Login</a></li>
-                <li><a href="#" data-page="help">Help?</a></li>
+                <li><a href="#" data-page="game" class="nav-link">Game</a></li>
+                <li><a href="#" data-page="login" class="nav-link">Login</a></li>
+                <li><a href="#" data-page="help" class="nav-link">Help?</a></li>
             </ul>
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         </div>
     </nav>
 
     <ul class="sidenav" id="mobile-demo">
-        <li><a href="#" data-page="game">Game</a></li>
-        <li><a href="#" data-page="login">Login</a></li>
-        <li><a href="#" data-page="help">Help?</a></li>
+        <li><a href="#" data-page="game" class="nav-link">Game</a></li>
+        <li><a href="#" data-page="login" class="nav-link">Login</a></li>
+        <li><a href="#" data-page="help" class="nav-link">Help?</a></li>
     </ul>
 
     <main>
         <div class="container">
-            <div id="content">
+            <div id="game" class="content-section">
+                <h4>Game Content</h4>
+                <!-- Conteúdo da página do jogo -->
                 <div class="scene">
                     <h4 id="scene-title">Cena: </h4>
                     <ul id="scene-list" class="collection"></ul>
@@ -45,17 +49,79 @@
                     <h4>Itens:</h4>
                     <ul id="items-list" class="collection"></ul>
                 </div>
+            </div>
 
+            <div id="login" class="content-section">
+                <h4>Bem-vindo(a)!</h4>
+                <ul class="collapsible popout">
+                    <li class="active">
+                        <div class="collapsible-header"><h5><i class="material-icons">person</i> Login</h5></div>
+                        <div class="collapsible-body">
+                            <form>
+                                <div class="input-field">
+                                    <input id="login-nickname" type="text" class="validate">
+                                    <label for="login-nickname">Nickname</label>
+                                </div>
+                                <div class="input-field">
+                                    <input id="login-passwd" type="password" class="validate">
+                                    <label for="login-passwd">Senha</label>
+                                </div>
+                                <button class="btn waves-effect waves-light" type="submit">Partiu Jogar</button>
+                            </form>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header"><h5><i class="material-icons">person_add</i> Registrar-se</h5></div>
+                        <div class="collapsible-body">
+                            <form>
+                                <div class="input-field">
+                                    <input id="register-nickname" type="text" class="validate">
+                                    <label for="register-nickname">Nickname</label>
+                                </div>
+                                <div class="input-field">
+                                    <input id="register-passwd" type="password" class="validate">
+                                    <label for="register-passwd">Digite sua Senha</label>
+                                </div>
+                                <div class="input-field">
+                                    <input id="register-passwd2" type="password" class="validate">
+                                    <label for="register-passwd2">Confirme sua Senha</label>
+                                </div>
+                                <button class="btn waves-effect waves-light" type="submit">Registrar e Good Game!</button>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+            </div>
 
+            <div id="help" class="content-section">
+                <h4>Help?</h4>
+                <ul class="collapsible popout">
+                    <li class="active">
+                        <div class="collapsible-header"><strong><i class="material-icons">filter_1</i> Como funciona o jogo?</strong></div>
+                        <div class="collapsible-body"><span>Lorem ipsum dolor sit amet consectetur adipisicing elit...</span></div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header"><strong><i class="material-icons">filter_2</i> Como recuperar meu login/personagem?</strong></div>
+                        <div class="collapsible-body"><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</span></div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header"><strong><i class="material-icons">filter_3</i> Contato</strong></div>
+                        <div class="collapsible-body"><span>Lorem ipsum dolor sit amet consectetur adipisicing elit...</span></div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header"><strong><i class="material-icons">filter_4</i> Como fazer os paranauê</strong></div>
+                        <div class="collapsible-body"><span>Lorem ipsum dolor sit amet consectetur adipisicing elit...</span></div>
+                    </li>
+                </ul>
             </div>
         </div>
     </main>
 
-    <div class="container2">
+    <div class="container terminal">
         <div class="content">
             <div class="command-input">
-                <h4>Terminal:</h4>            
-                <input type="text" id="command-input" placeholder="Digite seu comando aqui"     class="validate">
+                <h4>Terminal:</h4>
+                <input type="text" id="command-input" placeholder="Digite seu comando aqui" class="validate">
                 <button class="btn waves-effect waves-light" onclick="executeCommand()">Enviar Comando</button>
             </div>
         </div>
@@ -74,67 +140,116 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    
-    
+
     <script>
-        function createList(items, parentId, updateTitle) {
-            const ul = document.getElementById(parentId);
-            ul.innerHTML = '';
+document.addEventListener('DOMContentLoaded', function() {
+    const sidenavElems = document.querySelectorAll('.sidenav');
+    const sidenavs = M.Sidenav.init(sidenavElems);
+    M.Collapsible.init(document.querySelectorAll('.collapsible'));
 
-            items.forEach(item => {
-                const li = document.createElement('li');
-                li.classList.add('collection-item'); 
+    // Inicializa a visualização padrão
+    showSection('game');
 
-                if (item.title) { 
-                    li.innerHTML = `<strong> ${item.title}</strong><br><p>${item.description}</p>`;
-                    if (updateTitle) {
-                        document.getElementById('scene-title').innerHTML = `Cena: ${item.sceneId}`;
-                    }
-                } else if (item.item) { 
-                    li.innerHTML = `<strong>Item:</strong> ${item.item}<br><p>${item.descrItem}</p>`;
-                }
+    // Adiciona o ouvinte de eventos para o campo de entrada
+    const commandInput = document.getElementById('command-input');
+    const commandButton = document.querySelector('.command-input button');
 
-                ul.appendChild(li);
-            });
+    commandInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Evita o comportamento padrão de enviar um formulário
+            executeCommand(); // Chama a função para processar o comando
         }
+    });
 
-        async function fetchData(user) {
-            try {
-                const response = await fetch(`http://localhost:5150/${user}`);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                
-                createList(data.scenes, 'scene-list', true); 
-                createList(data.items, 'items-list', false); 
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+            const page = this.getAttribute('data-page');
+            showSection(page);
 
-            } catch (error) {
-                console.error('There has been a problem with your fetch operation:', error);
+            // Fecha o sidenav
+            sidenavs.forEach(sidenav => sidenav.close());
+        });
+    });
+});
+
+function showSection(id) {
+    document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('active-section');
+    });
+    document.getElementById(id).classList.add('active-section');
+
+    // Mostrar/ocultar o terminal com base na seção ativa
+    const terminal = document.querySelector('.terminal');
+    if (id === 'game') {
+        terminal.classList.remove('hidden');
+    } else {
+        terminal.classList.add('hidden');
+    }
+}
+
+function createList(items, parentId, updateTitle) {
+    const ul = document.getElementById(parentId);
+    ul.innerHTML = '';
+
+    items.forEach(item => {
+        const li = document.createElement('li');
+        li.classList.add('collection-item');
+
+        if (item.title) {
+            li.innerHTML = `<strong>${item.title}</strong><br><p>${item.description}</p>`;
+            if (updateTitle) {
+                document.getElementById('scene-title').innerHTML = `Cena: ${item.sceneId}`;
             }
+        } else if (item.item) {
+            li.innerHTML = `<strong>Item:</strong> ${item.item}<br><p>${item.descrItem}</p>`;
         }
 
-        function getUserFromURL() {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('user') || 'defaultUser'; 
+        ul.appendChild(li);
+    });
+}
+
+async function fetchData(user) {
+    try {
+        const response = await fetch(`http://localhost:5150/${user}`);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
+        const data = await response.json();
+        
+        createList(data.scenes, 'scene-list', true);
+        createList(data.items, 'items-list', false);
 
-        const user = getUserFromURL();
-        fetchData(user);
+    } catch (error) {
+        console.error('There has been a problem with your fetch operation:', error);
+    }
+}
 
-        function executeCommand() {
-            const command = document.getElementById('command-input').value;
-            if (command) {
-                const newUrl = new URL(window.location.href);
-                newUrl.searchParams.set('user', command);
-                window.history.pushState({}, '', newUrl);
+function getUserFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('user') || 'defaultUser';
+}
 
-                fetchData(command);
-            } else {
-                console.warn('Por favor, insira um comando.');
-            }
-        }
+const user = getUserFromURL();
+fetchData(user);
+
+function executeCommand() {
+    const command = document.getElementById('command-input').value;
+    if (command) {
+        const newUrl = new URL(window.location.href);
+        newUrl.searchParams.set('user', command);
+        window.history.pushState({}, '', newUrl);
+
+        fetchData(command);
+    } else {
+        console.warn('Por favor, insira um comando.');
+    }
+}
+
     </script>
+    
+    
+
 </body>
 
 </html>
