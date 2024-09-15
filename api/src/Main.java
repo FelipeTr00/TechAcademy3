@@ -28,11 +28,10 @@ public class Main {
             res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
         });
 
-        DAO = new DAO(); // Certifique-se de que a classe DAO está corretamente configurada
+        DAO = new DAO();
 
-        // Rota GET para a raiz
         get("/", (req, res) -> {
-            String username = "root"; // Nome de usuário fixo para o exemplo
+            String username = "root";
 
             Integer currentScene;
             List<Scene> scenes;
@@ -61,7 +60,7 @@ public class Main {
             }
         });
 
-        // Rota GET para obter informações do usuário
+        // Precisa de alteração
         get("/:username", (req, res) -> {
             String username = req.params(":username");
             Integer currentScene;
@@ -88,14 +87,13 @@ public class Main {
             }
         });
 
-        // Rota POST para inserir um novo usuário
         post("/insert-user", (req, res) -> {
             try {
                 User user = json.fromJson(req.body(), User.class);
 
                 if (user.getName() == null || user.getPassword() == null) {
                     res.status(400);
-                    return json.toJson(new ErrorResponse("Nome e senha são obrigatórios."));
+                    return json.toJson(new ErrorResponse("Nome ou senha inválido."));
                 }
 
                 DAO.insertUser(user);
@@ -108,11 +106,10 @@ public class Main {
             } catch (SQLException e) {
                 e.printStackTrace();
                 res.status(500);
-                return json.toJson(new ErrorResponse("Erro ao inserir o usuário no banco de dados."));
+                return json.toJson(new ErrorResponse("Erro ao criar usuário."));
             }
         });
 
-        // Rota POST para login
         post("/login", Main::handle);
 
     }
@@ -125,7 +122,7 @@ public class Main {
 
             if (username == null || password == null) {
                 res.status(400);
-                return json.toJson(new ErrorResponse("Nome de usuário e senha são obrigatórios."));
+                return json.toJson(new ErrorResponse("Nome e senha são obrigatórios."));
             }
 
             int currentScene = DAO.getCurrentScene(username, password);

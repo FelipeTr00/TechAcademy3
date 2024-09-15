@@ -122,7 +122,7 @@ public class DAO {
                 if (resultSet.next()) {
                     return resultSet.getInt("current_scene");
                 } else {
-                    throw new SQLException("Nome de usuário ou senha inválidos.");
+                    throw new SQLException("Nome ou senha inválidos.");
                 }
             }
         }

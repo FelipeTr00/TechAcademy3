@@ -31,7 +31,9 @@ main {
     align-items: center;
 }
 
-
+.logo-margin {
+    margin-left: 10px;
+}
 
 .page-footer {
     background-color: #004d40;
