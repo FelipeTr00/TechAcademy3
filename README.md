@@ -23,4 +23,8 @@ Link: https://felipetr00.github.io/TechAcademy3/
 
 ---
 
+#### INICIAR O GOOGLE CHROME 
 
+```bash
+google-chrome --disable-web-security --disable-gpu --user-data-dir=~/chromeTemp
+```

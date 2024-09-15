@@ -1,0 +1,6 @@
+{
+    "port": 5151,
+    "proxy": {
+      "/api": "http://localhost:5150"
+    }
+  }

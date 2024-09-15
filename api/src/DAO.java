@@ -110,4 +110,23 @@ public class DAO {
             throw e;
         }
     }
+
+    public int getCurrentScene(String name, String password) throws SQLException {
+        String sql = "SELECT current_scene FROM users WHERE name = ? AND password = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, name);
+            stmt.setString(2, password);
+
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("current_scene");
+                } else {
+                    throw new SQLException("Nome de usuário ou senha inválidos.");
+                }
+            }
+        }
+    }
+
+
 }

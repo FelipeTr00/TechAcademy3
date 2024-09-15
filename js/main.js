@@ -1,29 +1,26 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const sidenavElems = document.querySelectorAll('.sidenav');
     const sidenavs = M.Sidenav.init(sidenavElems);
     M.Collapsible.init(document.querySelectorAll('.collapsible'));
 
-    // Inicializa a visualização padrão
     showSection('game');
 
-    // Adiciona o ouvinte de eventos para o campo de entrada
     const commandInput = document.getElementById('command-input');
     const commandButton = document.querySelector('.command-input button');
 
-    commandInput.addEventListener('keydown', function(event) {
+    commandInput.addEventListener('keydown', function (event) {
         if (event.key === 'Enter') {
-            event.preventDefault(); // Evita o comportamento padrão de enviar um formulário
-            executeCommand(); // Chama a função para processar o comando
+            event.preventDefault(); 
+            executeCommand(); 
         }
     });
 
     document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', function(event) {
+        link.addEventListener('click', function (event) {
             event.preventDefault();
             const page = this.getAttribute('data-page');
             showSection(page);
 
-            // Fecha o sidenav
             sidenavs.forEach(sidenav => sidenav.close());
         });
     });
@@ -35,7 +32,6 @@ function showSection(id) {
     });
     document.getElementById(id).classList.add('active-section');
 
-    // Mostrar/ocultar o terminal com base na seção ativa
     const terminal = document.querySelector('.terminal');
     if (id === 'game') {
         terminal.classList.remove('hidden');
@@ -72,7 +68,7 @@ async function fetchData(user) {
             throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        
+
         createList(data.scenes, 'scene-list', true);
         createList(data.items, 'items-list', false);
 
