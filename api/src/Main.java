@@ -20,20 +20,21 @@ public class Main {
     private static DAO DAO;
 
     public static void main(String[] args) {
+
         Spark.setPort(5150);
+
 
         Spark.before((req, res) -> {
             res.header("Access-Control-Allow-Origin", "*");
             res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
             res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
-        });
+        }); // Tentando corrigir ploblema de acesso no navegador, não deu certo ainda...
 
         DAO = new DAO();
 
-        // Rota GET padrão
         get("/", (req, res) -> {
-            String username = "root";
 
+            String username = "root";
             Integer currentScene;
             List<Scene> scenes;
             List<Item> items;
@@ -45,13 +46,14 @@ public class Main {
                     scenes = DAO.findScenesByCurrentScene(currentScene);
                     items = DAO.findItemsByScene(currentScene);
 
-                    Map<String, Object> responseData = new HashMap<>();
-                    responseData.put("scenes", scenes);
-                    responseData.put("items", items);
+                Map<String, Object> responseData = new HashMap<>();
+                responseData.put("scenes", scenes);
+                responseData.put("items", items);
 
-                    res.type("application/json");
+                res.type("application/json");
                     return json.toJson(responseData);
-                } else {
+                }
+                else {
                     return json.toJson(new ErrorResponse("Usuário não encontrado."));
                 }
 
@@ -61,7 +63,6 @@ public class Main {
             }
         });
 
-        // Rota GET para usuário específico
         get("/:username", (req, res) -> {
             String username = req.params(":username");
             Integer currentScene;
@@ -69,16 +70,17 @@ public class Main {
             try {
                 currentScene = DAO.getCurrentSceneForUser(username);
                 if (currentScene != null) {
-                    List<Scene> scenes = DAO.findScenesByCurrentScene(currentScene);
-                    List<Item> items = DAO.findItemsByScene(currentScene);
+                List<Scene> scenes = DAO.findScenesByCurrentScene(currentScene);
+                List<Item> items = DAO.findItemsByScene(currentScene);
 
-                    Map<String, Object> responseData = new HashMap<>();
-                    responseData.put("scenes", scenes);
-                    responseData.put("items", items);
+                Map<String, Object> responseData = new HashMap<>();
+                responseData.put("scenes", scenes);
+                responseData.put("items", items);
 
-                    res.type("application/json");
+                res.type("application/json");
                     return json.toJson(responseData);
-                } else {
+                }
+                else {
                     return json.toJson(new ErrorResponse("Usuário não encontrado."));
                 }
 
@@ -88,7 +90,7 @@ public class Main {
             }
         });
 
-        // Rota POST para inserir usuário
+        // INSERIR USUÁRIO - ajustar Json e CORS
         post("/insert-user", (req, res) -> {
             try {
                 User user = json.fromJson(req.body(), User.class);
@@ -112,53 +114,45 @@ public class Main {
             }
         });
 
-        // Rota POST para login
         post("/login", Main::handle);
 
-        // Nova rota POST para /execute-command
         post("/execute-command", (req, res) -> {
             try {
-                // Parse do JSON recebido
-                Map<String, String> commandData = json.fromJson(req.body(), Map.class);
-                String command = commandData.get("command");
+                    Map<String, String> commandData = json.fromJson(req.body(), Map.class);
+                    String command = commandData.get("command");
 
                 if (command == null || command.isEmpty()) {
                     res.status(400);
                     return json.toJson(new ErrorResponse("Insira um comando."));
                 }
 
-                // Verifica se a primeira palavra é "use"
-                String[] commandParts = command.split(" ");
+                String[] commandParts = command.split(" "); // COMANDO USE <- ATUALIZAR CHECK E START
                 if (!commandParts[0].equalsIgnoreCase("use")) {
                     res.status(400);
-                    return json.toJson(new ErrorResponse("Comando inválido, tente novamente."));
+                    return json.toJson(new ErrorResponse("Tente outro comando."));
                 }
 
-                // Extrai a parte relevante do comando para a consulta
                 String rightCommand = command.substring(command.indexOf(" ") + 1).trim();
-
-                // Executa a consulta no banco de dados
-                int targetScene = DAO.getTargetScene(0, rightCommand); // Modifique o currentScene conforme necessário
+                    int targetScene = DAO.getTargetScene(0, rightCommand);
 
                 if (targetScene == -1) {
                     res.status(404);
                     return json.toJson(new ErrorResponse("Tente outro comando."));
                 }
 
-                // Prepara a resposta JSON
                 Map<String, Object> responseData = new HashMap<>();
-                responseData.put("target", targetScene);
+                    responseData.put("target", targetScene);
 
                 res.type("application/json");
                 return json.toJson(responseData);
 
             } catch (JsonSyntaxException e) {
                 res.status(400);
-                return json.toJson(new ErrorResponse("Formato JSON inválido."));
+                return json.toJson(new ErrorResponse("Erro no JSON."));
             } catch (SQLException e) {
                 e.printStackTrace();
                 res.status(500);
-                return json.toJson(new ErrorResponse("Verifique o banco de dados."));
+                return json.toJson(new ErrorResponse("Erro no banco de dados."));
             }
         });
     }
@@ -166,8 +160,8 @@ public class Main {
     private static Object handle(Request req, Response res) {
         try {
             Map<String, String> credentials = json.fromJson(req.body(), Map.class);
-            String username = credentials.get("username");
-            String password = credentials.get("password");
+                    String username = credentials.get("username");
+                    String password = credentials.get("password");
 
             if (username == null || password == null) {
                 res.status(400);
@@ -187,27 +181,27 @@ public class Main {
         }
     }
 
-    private static class ErrorResponse {
-        private String message;
+            private static class ErrorResponse {
+                private String message;
 
-        public ErrorResponse(String message) {
-            this.message = message;
-        }
+                public ErrorResponse(String message) {
+                    this.message = message;
+                }
 
-        public String getMessage() {
-            return message;
-        }
-    }
+                public String getMessage() {
+                    return message;
+                }
+            }
 
-    private static class SuccessResponse {
-        private String message;
+            private static class SuccessResponse {
+                private String message;
 
-        public SuccessResponse(String message) {
-            this.message = message;
-        }
+                public SuccessResponse(String message) {
+                    this.message = message;
+                }
 
-        public String getMessage() {
-            return message;
-        }
-    }
+                public String getMessage() {
+                    return message;
+                }
+            }
 }

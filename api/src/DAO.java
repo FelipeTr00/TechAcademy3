@@ -14,6 +14,7 @@ public class DAO {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             this.conn = DriverManager.getConnection(
+                    // "jdbc:mysql://localhost:3306/game"
                     "jdbc:mysql://localhost:3307/game",
                     "user",
                     "123"
@@ -122,7 +123,7 @@ public class DAO {
                 if (resultSet.next()) {
                     return resultSet.getInt("current_scene");
                 } else {
-                    throw new SQLException("Nome ou senha inválidos.");
+                    throw new SQLException("Erro de login.");
                 }
             }
         }
@@ -161,7 +162,9 @@ public class DAO {
     }
 
 
-    // FIM DOS COMANDOS
+    // COMANDO CHECK
+
+    // COMANDO SAVE
 
 
 }
