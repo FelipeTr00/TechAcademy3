@@ -128,5 +128,40 @@ public class DAO {
         }
     }
 
+    // CONSTRUINDO OS COMANDOS
+
+    // COMANDO USE
+
+    public int getTargetScene(int currentScene, String command) throws SQLException {
+        String sql = "SELECT target FROM scenes WHERE right_command = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, command);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("target");
+                } else {
+                    return -1; // Comando não encontrado ou incorreto
+                }
+            }
+        }
+    }
+
+    public boolean updateUserCurrentScene(String username, int newSceneId) throws SQLException {
+        String sql = "UPDATE users SET current_scene = ? WHERE name = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, newSceneId);
+            stmt.setString(2, username);
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0; // Retorna verdadeiro se a atualização foi bem-sucedida
+        }
+    }
+
+
+    // FIM DOS COMANDOS
+
 
 }

@@ -2,17 +2,27 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    font-size: 20px;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
 }
+
 main {
     flex: 1;
+    text-align: justify;
 }
 
 .hidden {
     display: none;
 }
 
+.container {
+    letter-spacing: 0.05em;
+    margin: 0 auto;
+    max-width: 800px;
+}
+
 .terminal {
-    
     color: white;
     padding: 10px;
     margin-bottom: 10px;
@@ -20,9 +30,9 @@ main {
     border: 1px solid #333;
     border-radius: 5px;
     align-items: center;
-    }
+}
 
-.command-input input{
+.command-input input {
     color: wheat;
     width: 100%;
     background-color: #333;
@@ -35,17 +45,37 @@ main {
     margin-left: 10px;
 }
 
+.items {
+    display: none;
+}
+
 .page-footer {
     background-color: #004d40;
+    padding: 10px;
+    color: white;
 }
+
 .footer-container {
     margin: 5px;
     display: flex;
     justify-content: space-between;
 }
+
 .content-section {
     display: none;
 }
+
 .active-section {
     display: block;
+}
+
+#scene-list li,
+#items-list li {
+    margin-bottom: 2px;
+    line-height: 1.5;
+}
+
+#scene-title,
+.items h4 {
+    margin-bottom: 2px;
 }

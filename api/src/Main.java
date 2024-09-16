@@ -30,6 +30,7 @@ public class Main {
 
         DAO = new DAO();
 
+        // Rota GET padrão
         get("/", (req, res) -> {
             String username = "root";
 
@@ -60,7 +61,7 @@ public class Main {
             }
         });
 
-        // Precisa de alteração
+        // Rota GET para usuário específico
         get("/:username", (req, res) -> {
             String username = req.params(":username");
             Integer currentScene;
@@ -87,6 +88,7 @@ public class Main {
             }
         });
 
+        // Rota POST para inserir usuário
         post("/insert-user", (req, res) -> {
             try {
                 User user = json.fromJson(req.body(), User.class);
@@ -110,8 +112,55 @@ public class Main {
             }
         });
 
+        // Rota POST para login
         post("/login", Main::handle);
 
+        // Nova rota POST para /execute-command
+        post("/execute-command", (req, res) -> {
+            try {
+                // Parse do JSON recebido
+                Map<String, String> commandData = json.fromJson(req.body(), Map.class);
+                String command = commandData.get("command");
+
+                if (command == null || command.isEmpty()) {
+                    res.status(400);
+                    return json.toJson(new ErrorResponse("Insira um comando."));
+                }
+
+                // Verifica se a primeira palavra é "use"
+                String[] commandParts = command.split(" ");
+                if (!commandParts[0].equalsIgnoreCase("use")) {
+                    res.status(400);
+                    return json.toJson(new ErrorResponse("Comando inválido, tente novamente."));
+                }
+
+                // Extrai a parte relevante do comando para a consulta
+                String rightCommand = command.substring(command.indexOf(" ") + 1).trim();
+
+                // Executa a consulta no banco de dados
+                int targetScene = DAO.getTargetScene(0, rightCommand); // Modifique o currentScene conforme necessário
+
+                if (targetScene == -1) {
+                    res.status(404);
+                    return json.toJson(new ErrorResponse("Tente outro comando."));
+                }
+
+                // Prepara a resposta JSON
+                Map<String, Object> responseData = new HashMap<>();
+                responseData.put("target", targetScene);
+
+                res.type("application/json");
+                return json.toJson(responseData);
+
+            } catch (JsonSyntaxException e) {
+                res.status(400);
+                return json.toJson(new ErrorResponse("Formato JSON inválido."));
+            } catch (SQLException e) {
+                e.printStackTrace();
+                res.status(500);
+                return json.toJson(new ErrorResponse("Verifique o banco de dados."));
+            }
+        });
     }
 
     private static Object handle(Request req, Response res) {
