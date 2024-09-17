@@ -63,12 +63,12 @@ public class Main {
             }
         });
 
-        get("/:username", (req, res) -> {
-            String username = req.params(":username");
+        get("/:scene", (req, res) -> {
+            String scene = req.params(":scene");
             Integer currentScene;
 
             try {
-                currentScene = DAO.getCurrentSceneForUser(username);
+                currentScene = DAO.getCurrentSceneForUser(scene);
                 if (currentScene != null) {
                 List<Scene> scenes = DAO.findScenesByCurrentScene(currentScene);
                 List<Item> items = DAO.findItemsByScene(currentScene);
