@@ -46,12 +46,12 @@ public class Main {
                     scenes = DAO.findScenesByCurrentScene(currentScene);
                     items = DAO.findItemsByScene(currentScene);
 
-                Map<String, Object> responseData = new HashMap<>();
-                responseData.put("scenes", scenes);
-                responseData.put("items", items);
+                Map<String, Object> responseApi = new HashMap<>();
+                responseApi.put("scenes", scenes);
+                responseApi.put("items", items);
 
                 res.type("application/json");
-                    return json.toJson(responseData);
+                    return json.toJson(responseApi);
                 }
                 else {
                     return json.toJson(new ErrorResponse("Usuário não encontrado."));
@@ -73,12 +73,12 @@ public class Main {
                 List<Scene> scenes = DAO.findScenesByCurrentScene(currentScene);
                 List<Item> items = DAO.findItemsByScene(currentScene);
 
-                Map<String, Object> responseData = new HashMap<>();
-                responseData.put("scenes", scenes);
-                responseData.put("items", items);
+                Map<String, Object> responseApi = new HashMap<>();
+                responseApi.put("scenes", scenes);
+                responseApi.put("items", items);
 
                 res.type("application/json");
-                    return json.toJson(responseData);
+                    return json.toJson(responseApi);
                 }
                 else {
                     return json.toJson(new ErrorResponse("Usuário não encontrado."));
@@ -90,7 +90,7 @@ public class Main {
             }
         });
 
-        // INSERIR USUÁRIO - ajustar Json e CORS
+        // INSERIR USUÁRIO - ajustar Json e CORS 
         post("/insert-user", (req, res) -> {
             try {
                 User user = json.fromJson(req.body(), User.class);
@@ -106,7 +106,7 @@ public class Main {
                 return json.toJson(new SuccessResponse("Usuário criado com sucesso."));
             } catch (JsonSyntaxException e) {
                 res.status(400);
-                return json.toJson(new ErrorResponse("Formato JSON inválido."));
+                return json.toJson(new ErrorResponse("JSON inválido."));
             } catch (SQLException e) {
                 e.printStackTrace();
                 res.status(500);
@@ -118,34 +118,35 @@ public class Main {
 
         post("/execute-command", (req, res) -> {
             try {
-                    Map<String, String> commandData = json.fromJson(req.body(), Map.class);
-                    String command = commandData.get("command");
+                Map<String, String> commandJson = json.fromJson(req.body(), Map.class);
+                String command = commandJson.get("command");
 
                 if (command == null || command.isEmpty()) {
                     res.status(400);
                     return json.toJson(new ErrorResponse("Insira um comando."));
                 }
 
-                String[] commandParts = command.split(" "); // COMANDO USE <- ATUALIZAR CHECK E START
-                if (!commandParts[0].equalsIgnoreCase("use")) {
+                String[] commandUse = command.split(" ");
+
+                // COMANDO USE <- ATUALIZAR CHECK E START
+                if (commandUse[0].equalsIgnoreCase("use")) {
+                    String rightCommand = command.substring(command.indexOf(" ") + 1).trim();
+                    int targetScene = DAO.getTargetScene(0, rightCommand);
+
+                    if (targetScene == -1) {
+                        res.status(404);
+                        return json.toJson(new ErrorResponse("Tente outro comando."));
+                    }
+
+                    Map<String, Object> responseApi = new HashMap<>();
+                    responseApi.put("target", targetScene);
+
+                    res.type("application/json");
+                    return json.toJson(responseApi);
+                } else {
                     res.status(400);
                     return json.toJson(new ErrorResponse("Tente outro comando."));
                 }
-
-                String rightCommand = command.substring(command.indexOf(" ") + 1).trim();
-                    int targetScene = DAO.getTargetScene(0, rightCommand);
-
-                if (targetScene == -1) {
-                    res.status(404);
-                    return json.toJson(new ErrorResponse("Tente outro comando."));
-                }
-
-                Map<String, Object> responseData = new HashMap<>();
-                    responseData.put("target", targetScene);
-
-                res.type("application/json");
-                return json.toJson(responseData);
-
             } catch (JsonSyntaxException e) {
                 res.status(400);
                 return json.toJson(new ErrorResponse("Erro no JSON."));
@@ -155,6 +156,7 @@ public class Main {
                 return json.toJson(new ErrorResponse("Erro no banco de dados."));
             }
         });
+
     }
 
     private static Object handle(Request req, Response res) {
@@ -165,7 +167,7 @@ public class Main {
 
             if (username == null || password == null) {
                 res.status(400);
-                return json.toJson(new ErrorResponse("Nome e senha são obrigatórios."));
+                return json.toJson(new ErrorResponse("Erro de login."));
             }
 
             int currentScene = DAO.getCurrentScene(username, password);
@@ -174,10 +176,10 @@ public class Main {
 
         } catch (SQLException e) {
             res.status(401);
-            return json.toJson(new ErrorResponse("Nome de usuário ou senha inválidos."));
+            return json.toJson(new ErrorResponse("Erro de login."));
         } catch (JsonSyntaxException e) {
             res.status(400);
-            return json.toJson(new ErrorResponse("Formato JSON inválido."));
+            return json.toJson(new ErrorResponse("JSON inválido."));
         }
     }
 
