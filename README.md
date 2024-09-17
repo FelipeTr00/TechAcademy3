@@ -1,4 +1,5 @@
 ## DERBY'S GAME
+#### TADS Módulo3
 ```
 ```
 ### TECNOLOGIAS
@@ -8,18 +9,24 @@ ___
 
 #### BRANCHES
 
-    Branch -> main: projeto <br>
-    Branch -> tarefas: trilhas e listas de exercícios
+- Branch → **main:** projeto. <br>
+- Branch → **tarefas:** trilhas e listas de exercícios.
 
 ---
 #### BACKEND
 
-    Banco de dados MySQL
-    Integração JAVA
+- Banco de dados **MySQL**.
+- Integração API **JAVA**.
+- Frontend **JS**.
 
-D.E.R.
 
-Link: https://felipetr00.github.io/TechAcademy3/
+→ Link: https://felipetr00.github.io/TechAcademy3/
+
+---
+#### BANCO DE DADOS MySQL
+<P>D.E.R.</P>
+
+![Game Preview](assets/game.png)
 
 ---
 
