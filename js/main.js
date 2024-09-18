@@ -1,33 +1,32 @@
+
 document.addEventListener('DOMContentLoaded', function () {
-    const sidenavElems = document.querySelectorAll('.sidenav');
-    const sidenavs = M.Sidenav.init(sidenavElems);
-    M.Collapsible.init(document.querySelectorAll('.collapsible'));
+        const sidenavElems = document.querySelectorAll('.sidenav');
+        const sidenavs = M.Sidenav.init(sidenavElems);
+        M.Collapsible.init(document.querySelectorAll('.collapsible'));
 
-    showSection('game');
+        showSection('game');
 
-    const commandInput = document.getElementById('command-input');
-    const commandButton = document.querySelector('.command-input button');
+        const commandInput = document.getElementById('command-input');
+        const commandButton = document.querySelector('.command-input button');
 
-    // Adiciona o evento para pressionar 'Enter' no input
-    commandInput.addEventListener('keydown', function (event) {
-        if (event.key === 'Enter') {
-            event.preventDefault(); 
-            executeCommand(); 
-        }
-    });
+        commandInput.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); 
+                executeCommand(); 
+            }
+        });
 
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', function (event) {
-            event.preventDefault();
-            const page = this.getAttribute('data-page');
-            showSection(page);
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function (event) {
+                event.preventDefault();
+                const page = this.getAttribute('data-page');
+                showSection(page);
 
-            sidenavs.forEach(sidenav => sidenav.close());
+                sidenavs.forEach(sidenav => sidenav.close());
+            });
         });
     });
-});
 
-// Função para mostrar a seção ativa
 function showSection(id) {
     document.querySelectorAll('.content-section').forEach(section => {
         section.classList.remove('active-section');
@@ -42,7 +41,6 @@ function showSection(id) {
     }
 }
 
-// Função para criar listas de cenas e itens
 function createList(items, parentId, updateTitle) {
     const ul = document.getElementById(parentId);
     ul.innerHTML = '';
@@ -64,7 +62,7 @@ function createList(items, parentId, updateTitle) {
     });
 }
 
-// Função para buscar dados de uma cena específica
+
 async function fetchData(scene) {
     try {
         const response = await fetch(`http://localhost:5150/${scene}`);
@@ -81,38 +79,40 @@ async function fetchData(scene) {
     }
 }
 
-// Função para executar o comando
 async function executeCommand() {
     let command = document.getElementById('command-input').value.trim().toLowerCase();
 
-    // Usar switch para lidar com diferentes comandos
+    // ######################################
+    // #### SWITCH CASE PARA OS COMANDOS ####
+    // ######################################
     switch (command) {
+        case 'help':
+
+        command = 'use help';
+            break;
+        
         case 'start':
-            // Modifica o comando para "use start"
-            command = 'use start';
+
+        command = 'use start';
             break;
 
         case 'check itens':
-            // Mostra a seção de itens
-            document.querySelector('.items').style.display = 'block';
-            return; // Sai da função sem fazer mais nada
+
+        document.querySelector('.items').style.display = 'block';
+            return;
 
         default:
-            // Para outros comandos, continue o fluxo normal
-            // Oculta os itens ao avançar para a próxima cena
             document.querySelector('.items').style.display = 'none';
             break;
     }
 
-    // Executa a chamada à API
     try {
-        // Envia o comando para o backend na porta correta
-        const response = await fetch('http://localhost:5150/execute-command', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ command: command }) // Usa o comando modificado se necessário
+            const response = await fetch('http://localhost:5150/execute-command', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            body: JSON.stringify({ command: command })
         });
 
         if (!response.ok) {
@@ -121,16 +121,13 @@ async function executeCommand() {
 
         const data = await response.json();
 
-        // Verifica se há algum erro no retorno da API
         if (data.error) {
             console.error('Erro:', data.error);
             return;
         }
 
-        // Obtém o valor da cena (target) do retorno
         const scene = data.target;
 
-        // Faz a requisição para obter os dados da nova cena
         fetchData(scene);
 
     } catch (error) {

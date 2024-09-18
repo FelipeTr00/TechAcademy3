@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 // ########## CLASSE PARA AÇÕES DO JOGO ##########
+
 public class Play {
 
     private static final Gson json = new Gson();
@@ -75,21 +76,18 @@ public class Play {
         public ErrorResponse(String message) {
             this.message = message;
         }
-
         public String getMessage() {
             return message;
         }
     }
-
-    public static class SuccessResponse {
+        public static class SuccessResponse {
         private String message;
 
         public SuccessResponse(String message) {
             this.message = message;
-        }
-
+            }
         public String getMessage() {
             return message;
+            }
         }
-    }
 }
