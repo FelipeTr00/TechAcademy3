@@ -22,10 +22,8 @@ public class DAO {
             System.out.println("Conexão com MySQL OK! Link: http://localhost:5150/");
         } catch (ClassNotFoundException e) {
             System.out.println("Erro de Driver.");
-            e.printStackTrace();
         } catch (SQLException e) {
             System.err.println("Falha na conexão MySQL.");
-            e.printStackTrace();
         }
     }
 
@@ -36,20 +34,17 @@ public class DAO {
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, currentScene);
 
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    Scene scene = new Scene();
-                    scene.setSceneId(rs.getInt("scene_id"));
-                    scene.setTitle(rs.getString("title"));
-                    scene.setTarget(rs.getInt("target"));
-                    scene.setDescription(rs.getString("description"));
-                    scene.setRightCommand(rs.getString("right_command"));
-                    scene.setInventory(rs.getString("inventory"));
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+            Scene scene = new Scene();
+            scene.setSceneId(rs.getInt("scene_id"));
+            scene.setTitle(rs.getString("title"));
+            scene.setTarget(rs.getInt("target"));
+            scene.setDescription(rs.getString("description"));
+            scene.setRightCommand(rs.getString("right_command"));
+            scene.setInventory(rs.getString("inventory"));
 
-                    scenes.add(scene);
-                }
-            }
-        }
+                scenes.add(scene);}}}
 
         return scenes;
     }
@@ -63,13 +58,14 @@ public class DAO {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
+
                     Item item = new Item();
                     item.setItemId(rs.getInt("item_id"));
                     item.setItem(rs.getString("item"));
                     item.setDescrItem(rs.getString("descr_item"));
                     item.setSceneId(rs.getInt("scene_id"));
-
                     items.add(item);
+
                 }
             }
         }
@@ -143,7 +139,7 @@ public class DAO {
                 if (rs.next()) {
                     return rs.getInt("target");
                 } else {
-                    return -1; // Comando não encontrado ou incorreto
+                    return -1; // Comando não encontrado.
                 }
             }
         }
@@ -157,7 +153,7 @@ public class DAO {
             stmt.setString(2, username);
 
             int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0; // Retorna verdadeiro se a atualização foi bem-sucedida
+            return rowsAffected > 0; // Retorna verdadeiro se deu certo.
         }
     }
 
