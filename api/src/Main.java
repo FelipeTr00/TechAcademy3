@@ -54,7 +54,7 @@ public class Main {
                 DAO.insertUser(user);
 
                 res.status(201);
-                return json.toJson( new Play.SuccessResponse("Usuário criado com sucesso."));
+                return json.toJson( new Play.ResponseOk("Usuário criado com sucesso."));
             }
                 catch (SQLException e) {
                     return json.toJson(new Play.ErrorResponse("Erro ao criar usuário."));

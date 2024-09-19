@@ -42,31 +42,48 @@ public class Play {
         }
     }
 
+    // ########## CONSTRUÇÃO DOS COMANDOS ##########
     public String executeCommand(String command) {
         try {
-            if (command == null || command.isEmpty()) {
-            return json.toJson(new ErrorResponse("Insira um comando."));
-            }
-            String[] commandUse = command.split(" ");
+        switch (command) {
+            case "help":
+                    command = "use help";
+                    break;
+            case "start":
+                    command = "use start";
+                    break;
+            case "check itens":
+                    return json.toJson(new ResponseOk("Itens visualizados"));
+            default:
+                if (command.startsWith("use ")) { // Consulta padrão no banco
 
-            if (commandUse[0].equalsIgnoreCase("use")) {
-            String rightCommand = command.substring(command.indexOf(" ") + 1).trim();
-                int targetScene = DAO.getTargetScene(0, rightCommand);
+                    String rightCommand = command.substring(command.indexOf(" ") + 1);
+                    int targetScene = DAO.getTargetScene(0, rightCommand);
 
                 if (targetScene == -1) {
                     return json.toJson(new ErrorResponse("Tente outro comando."));
-                }
+                    }
+
+                    Map<String, Object> responseApi = new HashMap<>();
+                    responseApi.put("target", targetScene);
+                    return json.toJson(responseApi);
+                } else return json.toJson(new ErrorResponse("Tente outro comando."));
+            }
+
+        String rightCommand = command.substring(command.indexOf(" ") + 1);
+            int targetScene = DAO.getTargetScene(0, rightCommand);
 
             Map<String, Object> responseApi = new HashMap<>();
-            responseApi.put("target", targetScene);
 
-                return json.toJson(responseApi);
-            } else return json.toJson(new ErrorResponse("Tente outro comando."));
+                responseApi.put("target", targetScene);
+            return json.toJson(responseApi);
 
         } catch (SQLException e) {
             return json.toJson(new ErrorResponse("Erro no banco de dados."));
         }
     }
+
+
 
 //  ######## OPÇÕES DE RESPOSTAS PARA OS ERROS API, CORS E BANCO DE DADOS ##########
 
@@ -80,10 +97,10 @@ public class Play {
             return message;
         }
     }
-        public static class SuccessResponse {
+        public static class ResponseOk {
         private String message;
 
-        public SuccessResponse(String message) {
+        public ResponseOk(String message) {
             this.message = message;
             }
         public String getMessage() {
