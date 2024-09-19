@@ -79,59 +79,48 @@ async function fetchData(scene) {
     }
 }
 
-async function executeCommand() {
-    let command = document.getElementById('command-input').value.trim().toLowerCase();
-
     // ######################################
     // #### SWITCH CASE PARA OS COMANDOS ####
     // ######################################
-    switch (command) {
-        case 'help':
 
-        command = 'use help';
-            break;
-        
-        case 'start':
-
-        command = 'use start';
-            break;
-
-        case 'check itens':
-
-        document.querySelector('.items').style.display = 'block';
-            return;
-
-        default:
-            document.querySelector('.items').style.display = 'none';
-            break;
-    }
-
-    try {
+    async function executeCommand() {
+        let command = document.getElementById('command-input').value.trim().toLowerCase();
+    
+        switch (command) {
+            case 'check itens':
+                document.querySelector('.items').style.display = 'block';
+                return;
+            default:
+                document.querySelector('.items').style.display = 'none';
+                break;
+        }
+    
+        try {
             const response = await fetch('http://localhost:5150/execute-command', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-            body: JSON.stringify({ command: command })
-        });
-
-        if (!response.ok) {
-            throw new Error('Erro na resposta da API');
+                body: JSON.stringify({ command: command })
+            });
+    
+            if (!response.ok) {
+                throw new Error('Erro na resposta da API');
+            }
+    
+            const data = await response.json();
+    
+            if (data.error) {
+                console.error('Erro:', data.error);
+                return;
+            }
+    
+            const scene = data.target;
+    
+            fetchData(scene);
+    
+        } catch (error) {
+            console.error('Erro ao executar comando:', error);
         }
-
-        const data = await response.json();
-
-        if (data.error) {
-            console.error('Erro:', data.error);
-            return;
-        }
-
-        const scene = data.target;
-
-        fetchData(scene);
-
-    } catch (error) {
-        console.error('Erro ao executar comando:', error);
     }
-}
 
