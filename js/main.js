@@ -79,9 +79,7 @@ async function fetchData(scene) {
     }
 }
 
-    // ######################################
     // #### SWITCH CASE PARA OS COMANDOS ####
-    // ######################################
 
     async function executeCommand() {
         let command = document.getElementById('command-input').value.trim().toLowerCase();
