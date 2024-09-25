@@ -1,7 +1,8 @@
 ## DERBY'S GAME
 #### TADS Módulo3
-```
-```
+
+---
+
 ### TECNOLOGIAS
 
 [![My Skills](https://skillicons.dev/icons?i=html,css,js,java,mysql&theme=light)](https://skillicons.dev)
