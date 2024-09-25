@@ -77,8 +77,6 @@ public class Play {
     }
 
 
-
-
 //  ######## OPÇÕES DE RESPOSTAS PARA OS ERROS API, CORS E BANCO DE DADOS ##########
 
         public static class ErrorResponse {
