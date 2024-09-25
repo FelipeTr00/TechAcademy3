@@ -63,6 +63,7 @@ public class Main {
 
         post("/login", Main::handle);
 
+        // Comandos
         post("/execute-command", (req, res) -> {
             Type mapType = new TypeToken<Map<String, String>>(){}.getType(); // Verificar se está certo
             Map<String, String> commandJson = json.fromJson(req.body(), mapType);

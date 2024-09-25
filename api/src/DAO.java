@@ -72,11 +72,11 @@ public class DAO {
         return items;
     }
 
-    public Integer getCurrentSceneForUser(String username) throws SQLException {
-        String sql = "SELECT current_scene FROM users WHERE name = ?";
+    public Integer getCurrentSceneForUser(String thisscene) throws SQLException {
+        String sql = "SELECT current_scene FROM users WHERE current_scene = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, username);
+            stmt.setString(1, thisscene);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -124,6 +124,27 @@ public class DAO {
         }
     }
 
+    public Scene getSceneById(int sceneId) throws SQLException {
+        String sql = "SELECT * FROM scenes WHERE scene_id = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, sceneId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Scene scene = new Scene();
+                    scene.setSceneId(rs.getInt("scene_id"));
+                    scene.setDescription(rs.getString("description"));
+                    scene.setTitle(rs.getString("title"));
+                    scene.setTarget(rs.getInt("target"));
+                    return scene;
+                } else {
+                    return null;
+                }
+            }
+        }
+    }
+
     // CONSTRUINDO OS COMANDOS
 
     // COMANDO USE
@@ -138,7 +159,7 @@ public class DAO {
                 if (rs.next()) {
                     return rs.getInt("target");
                 } else {
-                    return -1; // Comando não encontrado.
+                    return -1; // reinicia o jogo
                 }
             }
         }
@@ -155,9 +176,6 @@ public class DAO {
             return rowsAffected > 0; // Retorna verdadeiro se deu certo.
         }
     }
-
-
-    // COMANDO CHECK
 
     // COMANDO SAVE
 

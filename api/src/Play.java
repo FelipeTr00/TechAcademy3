@@ -17,13 +17,13 @@ public class Play {
         DAO = dao;
     }
 
-    public String getScenesAndItems(String username) {
+    public String getScenesAndItems(String thisscene) {
         Integer currentScene;
         List<Scene> scenes;
         List<Item> items;
 
         try {
-            currentScene = DAO.getCurrentSceneForUser(username);
+            currentScene = DAO.getCurrentSceneForUser(thisscene);
 
             if (currentScene != null) {
             scenes = DAO.findScenesByCurrentScene(currentScene);
@@ -45,43 +45,37 @@ public class Play {
     // ########## CONSTRUÇÃO DOS COMANDOS ##########
     public String executeCommand(String command) {
         try {
-        switch (command) {
-            case "help":
-                    command = "use help";
+            switch (command) {
+                case "help":
+                    command = "help";
                     break;
-            case "start":
+                case "start":
                     command = "use start";
                     break;
-            case "check itens":
+                case "restart":
+                    command = "use start";
+                    break;
+                case "check itens":
                     return json.toJson(new ResponseOk("Itens visualizados"));
-            default:
-                if (command.startsWith("use ")) { // Consulta padrão no banco
-
-                    String rightCommand = command.substring(command.indexOf(" ") + 1);
-                    int targetScene = DAO.getTargetScene(0, rightCommand);
-
-                if (targetScene == -1) {
-                    return json.toJson(new ErrorResponse("Tente outro comando."));
-                    }
-
-                    Map<String, Object> responseApi = new HashMap<>();
-                    responseApi.put("target", targetScene);
-                    return json.toJson(responseApi);
-                } else return json.toJson(new ErrorResponse("Tente outro comando."));
             }
 
-        String rightCommand = command.substring(command.indexOf(" ") + 1);
-            int targetScene = DAO.getTargetScene(0, rightCommand);
+            if (command.startsWith("use ") || command.startsWith("get ")) { // Comandos USE e GET
+                String rightCommand = command;
 
-            Map<String, Object> responseApi = new HashMap<>();
+                int targetScene = DAO.getTargetScene(-1, rightCommand);
 
+                Map<String, Object> responseApi = new HashMap<>();
                 responseApi.put("target", targetScene);
-            return json.toJson(responseApi);
 
+                return json.toJson(responseApi);
+            } else {
+                return json.toJson(new ErrorResponse("Tente outro comando."));
+            }
         } catch (SQLException e) {
             return json.toJson(new ErrorResponse("Erro no banco de dados."));
         }
     }
+
 
 
 
