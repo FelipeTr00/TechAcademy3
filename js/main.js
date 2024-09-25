@@ -149,9 +149,9 @@ async function executeCommand() {
 
                 // Verifica o campo inventory e exibe em um alert se não estiver vazio
                 if (data.scenes[0] && data.scenes[0].inventory && data.scenes[0].inventory.trim() !== "") {
-                    alert(`Itens do inventário: ${data.scenes[0].inventory}`);
+                    alert(`Inventário: ${data.scenes[0].inventory}`);
                 } else {
-                    alert('Seu inventário está vazio ou não foi encontrado.');
+                    alert('O inventário está vazio.');
                 }
 
             } catch (error) {
